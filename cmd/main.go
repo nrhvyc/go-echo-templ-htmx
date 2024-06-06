@@ -38,14 +38,14 @@ func main() {
 		e.Logger.Fatalf("failed to create store: %s", err)
 	}
 
-	us := services.NewUserServices(services.User{}, store)
-	ah := handlers.NewAuthHandler(us)
+	userServices := services.NewUserServices(services.User{}, store)
+	authHandler := handlers.NewAuthHandler(userServices)
 
-	ts := services.NewTodoServices(services.Todo{}, store)
-	th := handlers.NewTaskHandler(ts)
+	todoServices := services.NewTodoServices(services.Todo{}, store)
+	taskHandler := handlers.NewTaskHandler(todoServices)
 
 	// Setting Routes
-	handlers.SetupRoutes(e, ah, th)
+	handlers.SetupRoutes(e, authHandler, taskHandler)
 
 	// Start Server
 	e.Logger.Fatal(e.Start(":8082"))
